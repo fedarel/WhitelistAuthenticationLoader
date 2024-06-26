@@ -1,21 +1,17 @@
 -- Define your key data
 local keyData = {
     ["test123"] = "ClientID123", -- Replace with actual valid key and corresponding client ID
-    ["freeKey"] = "free",        -- Key that can be used by any client
-    ["key"] = nil       -- Suspended key
+    ["freeKey"] = "free"         -- Key that can be used by any client
 }
 
 -- Function to check if the key is valid and linked to the correct client ID
 function isValidKey(key, clientID)
-    if keyData[key] == nil then
-        if keyData[key] == nil and key == "suspendedKey" then
-            return false, "This key has been suspended for suspicious activity, please contact support for more information about this issue."
-        else
-            return false, "Invalid key or key not set. Access denied."
-        end
-    elseif keyData[key] == "free" then
+    local linkedClientID = keyData[key]
+    if linkedClientID == nil then
+        return false, "Invalid key or key not set. Access denied."
+    elseif linkedClientID == "free" then
         return true, ""
-    elseif keyData[key] == clientID then
+    elseif linkedClientID == clientID then
         return true, ""
     else
         return false, "This key is linked to a different client ID, please contact support if this is a recurring issue."
