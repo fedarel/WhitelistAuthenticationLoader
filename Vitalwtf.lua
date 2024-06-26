@@ -7,12 +7,15 @@ local keyData = {
 
 -- Function to check if the key is valid and linked to the correct client ID
 function isValidKey(key, clientID)
-    local linkedClientID = keyData[key]
-    if linkedClientID == nil then
-        return false, "This key has been suspended for suspicious activity, please contact support for more information about this issue."
-    elseif linkedClientID == "free" then
+    if keyData[key] == nil then
+        if key == "suspendedKey" then
+            return false, "This key has been suspended for suspicious activity, please contact support for more information about this issue."
+        else
+            return false, "Invalid key or key not set. Access denied."
+        end
+    elseif keyData[key] == "free" then
         return true, ""
-    elseif linkedClientID == clientID then
+    elseif keyData[key] == clientID then
         return true, ""
     else
         return false, "This key is linked to a different client ID, please contact support if this is a recurring issue."
