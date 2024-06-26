@@ -11,9 +11,9 @@ function isValidKey(key, clientID)
     if linkedClientID == nil then
         return false, "This key has been suspended for suspicious activity, please contact support for more information about this issue."
     elseif linkedClientID == "free" then
-        return true
+        return true, ""
     elseif linkedClientID == clientID then
-        return true
+        return true, ""
     else
         return false, "This key is linked to a different client ID, please contact support if this is a recurring issue."
     end
