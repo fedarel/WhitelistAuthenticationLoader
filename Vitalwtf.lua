@@ -1,7 +1,7 @@
 -- Define your key data
 local keyData = {
     ["test123"] = "ClientID123", -- Replace with actual valid key and corresponding client ID
-    ["freeKey"] = "free",        -- Key that can be used by any client
+    ["free"] = "free",        -- Key that can be used by any client
     ["suspendedKey"] = nil       -- Suspended key
 }
 
