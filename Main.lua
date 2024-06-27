@@ -45,39 +45,21 @@ print("✅ Authenticated successfully in " .. totalAuthTime .. " seconds")
 wait(1)
 print("🔒 System secure and ready for use")
 
-local HttpService = game:GetService("HttpService")
+local keyData = {
+    ["test123"] = "ClientID123", 
+    ["freeKey"] = "free"         
+}
 
-local function getKeyData()
-    local url = "https://raw.githubusercontent.com/archivesniped/FCATV4WhitelistLoader/main/MainWhitelistedKeys.lua"
-    local response
-    pcall(function()
-        response = HttpService:GetAsync(url)
-    end)
-    if not response then
-        return nil, "Failed to fetch key data from the server."
-    end
-
-    local keyData
-    pcall(function()
-        keyData = HttpService:JSONDecode(response)
-    end)
-    if not keyData then
-        return nil, "Failed to decode key data from the server response."
-    end
-
-    return keyData, nil
-end
-
-function isValidKey(key, clientID, keyData)
+function isValidKey(key, clientID)
     local linkedClientID = keyData[key]
     if linkedClientID == nil then
-        return false, "Invalid key or key not whitelisted anymore.."
+        return false, "Invalid key or key whitelist expired."
     elseif linkedClientID == "free" then
         return true, ""
     elseif linkedClientID == clientID then
         return true, ""
     else
-        return false, "This key is linked to a different client ID, please contact support if this is a recurring issue."
+        return false, "This key is linked to a different HWID, please contact support if this is a recurring issue."
     end
 end
 
@@ -93,19 +75,14 @@ end
 
 local clientID = getClientID()
 
-local keyData, err = getKeyData()
-if not keyData then
-    kickUser(err)
-else
-
-    if getgenv().key then
-        local isValid, message = isValidKey(getgenv().key, clientID, keyData)
-        if isValid then
-            print("Key Valid! You are whitelisted")
-        else
-            kickUser(message)
-        end
+if getgenv().key then
+    local isValid, message = isValidKey(getgenv().key, clientID)
+    if isValid then
+        print("Key is valid! Proceeding with additional actions.")
+        warn("test 123")
     else
-        kickUser("Invalid key or key not whitelisted anymore.")
+        kickUser(message)
     end
+else
+    kickUser("Invalid key, if you believe this was a issue, please contact support.")
 end
