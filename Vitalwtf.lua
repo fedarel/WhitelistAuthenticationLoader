@@ -47,13 +47,11 @@ print("✅ Authenticated successfully in " .. totalAuthTime .. " seconds")
 wait(1)
 print("🔒 System secure and ready for use")
 
--- Define your key data
 local keyData = {
-    ["test123"] = "ClientID123", -- Replace with actual valid key and corresponding client ID
-    ["freeKey"] = "free"         -- Key that can be used by any client
+    ["test123"] = "ClientID123", 
+    ["freeKey"] = "free"         
 }
 
--- Function to check if the key is valid and linked to the correct client ID
 function isValidKey(key, clientID)
     local linkedClientID = keyData[key]
     if linkedClientID == nil then
@@ -63,33 +61,30 @@ function isValidKey(key, clientID)
     elseif linkedClientID == clientID then
         return true, ""
     else
-        return false, "This key is linked to a different client ID, please contact support if this is a recurring issue."
+        return false, "This key is linked to a different HWID, please contact support if this is a recurring issue."
     end
 end
 
--- Function to get the client ID using rbxanalyticsservice
 function getClientID()
     local RbxAnalyticsService = game:GetService("RbxAnalyticsService")
     return RbxAnalyticsService:GetClientId()
 end
 
--- Function to kick the user with a message
 function kickUser(message)
     local player = game.Players.LocalPlayer
     player:Kick(message)
 end
 
--- Get the client ID
 local clientID = getClientID()
 
--- Check if getgenv().key is set and if it's valid
 if getgenv().key then
     local isValid, message = isValidKey(getgenv().key, clientID)
     if isValid then
         print("Key is valid! Proceeding with additional actions.")
+        warn("Script owner did not place a script here!")
     else
         kickUser(message)
     end
 else
-    kickUser("Invalid key or key not whitelisted anymore.")
+    kickUser("Invalid key, if you believe this was a issue, please contact support.")
 end
