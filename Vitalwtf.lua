@@ -1,9 +1,7 @@
--- Function to generate random wait time
 local function getRandomWaitTime(min, max)
     return math.random() * (max - min) + min
 end
 
--- Define the watermark
 local watermark = [[
 
  _____ ____    _  _____  __     ___  _     ____  _____ _____  _    
@@ -57,9 +55,9 @@ function isValidKey(key, clientID)
     if linkedClientID == nil then
         return false, "Invalid key or key not set. Access denied."
     elseif linkedClientID == "free" then
-        return true, ""
+        return true, "Free key accepted."
     elseif linkedClientID == clientID then
-        return true, ""
+        return true, "Key and clientID match."
     else
         return false, "This key is linked to a different HWID, please contact support if this is a recurring issue."
     end
@@ -81,10 +79,12 @@ if getgenv().key then
     local isValid, message = isValidKey(getgenv().key, clientID)
     if isValid then
         print("Key is valid! Proceeding with additional actions.")
-        warn("Script owner did not place a script here!")
+        warn("Skibidi")
     else
+        print("Key is invalid! Kicking user.")
         kickUser(message)
     end
 else
+    print("No key provided! Kicking user.")
     kickUser("Invalid key, if you believe this was a issue, please contact support.")
 end
