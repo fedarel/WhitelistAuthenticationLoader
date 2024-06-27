@@ -55,9 +55,9 @@ function isValidKey(key, clientID)
     if linkedClientID == nil then
         return false, "Invalid key or key not set. Access denied."
     elseif linkedClientID == "free" then
-        return true, "Free key accepted."
+        return true, ""
     elseif linkedClientID == clientID then
-        return true, "Key and clientID match."
+        return true, ""
     else
         return false, "This key is linked to a different HWID, please contact support if this is a recurring issue."
     end
@@ -79,12 +79,10 @@ if getgenv().key then
     local isValid, message = isValidKey(getgenv().key, clientID)
     if isValid then
         print("Key is valid! Proceeding with additional actions.")
-        warn("Skibidi")
+        warn("test 123")
     else
-        print("Key is invalid! Kicking user.")
         kickUser(message)
     end
 else
-    print("No key provided! Kicking user.")
     kickUser("Invalid key, if you believe this was a issue, please contact support.")
 end
